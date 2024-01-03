@@ -96,8 +96,8 @@ form{
 .weather-type{
     border: solid 1px rgb(0,150,255);
     border-radius: 5px;
-    height: 30vh;
-    width: 30vh;
+    height: 20vh;
+    width: 20vh;
     background-color: rgb(246, 246, 246);
 }
 
@@ -171,4 +171,21 @@ footer{
     .day-card{
         width: 40vw;
     }
+}
+
+@media screen and (max-width: 500px){
+    .menu-header{
+        padding: 0;
+        width: 100vw;
+        height: 15vh;
+    }
+
+    .weather-card{
+        width: 80vw;
+        height: 70vh;
+    }
+    .weekly-forcast{
+        overflow: hidden;
+    }
+    
 }

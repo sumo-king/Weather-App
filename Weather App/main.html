@@ -9,15 +9,18 @@
 <body>
     <header class="menu-header">
         <h1 class="app-title" style="background-color: transparent;">The Weather App </h1>
-        
+        <div style="background-color: transparent">
             <input type="text" class="city-name-input" placeholder="city name">
-        <button class="city-search" onclick="searchClick()">Search</button>
+            <button class="city-search" onclick="searchClick()">Search</button>
+        </div>
         
+      
     </header>
     <section class="main-section">
         <div class="weather-card">
-            <h1 class="city-name"></h1>
-            <img src="#" class="weather-type">
+            <h1 style="background-color: transparent" class="city-name"></h1>
+            <h2 class="degree-style" id="description"></h2>
+            <img id="weather-icon" src="http://openweathermap.org/img/w/10d.png" class="weather-type"/>
             <h2 class="degree-style">Temperature: <span class="degree-style" id="current-temp" ></span>℃</h2>
             <h2 class="degree-style">Humidity: <span class="degree-style" id="current-humidity"></span></h2>
             <h2 class="degree-style">Feels like: <span class="degree-style" id="feels-like"></span>℃</h2>
