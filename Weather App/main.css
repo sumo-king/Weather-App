@@ -47,6 +47,12 @@ form{
     font-size: 20px;
 }
 
+.daily{
+    padding-top: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 .list-item:hover{
     transition: border-bottom 110ms ease-out;
     border-bottom: solid 2px rgb(246, 246, 246);
@@ -120,9 +126,9 @@ footer{
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-top: 13vh;
 }
 .day-card{
+    text-align: center;
     height: 70vh;
     width: 20vh;
     border: solid 1px rgb(0, 170, 255);
