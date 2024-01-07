@@ -51,57 +51,44 @@ async function displayCurrentPositionWeather(lat, lon){
 }
 
 async function weatherForcast(city, lat, lon){
-
+    // Search results for weather
     if(city && (lat == null && lat == null)){
 
         const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`);
         const forecastData = await response.json();
         const info = forecastData.list;
-        console.log(forecastData.list)
-        let output = "";
 
-        let count = 0; 
-        $.each(info, function(key, value) {
-            let weatherImage = value.weather[0].icon;
-            // TODO: Add weather icons
-            output += '<div class="day-card">'+
-                '<h1 style="background-color: transparent;">'+ (value.main.temp - 273).toFixed(0) +'℃</h1>'+
-                '<img style="width: 100px; height: 100px;" id="" src="http://openweathermap.org/img/w/ '+ weatherImage  +' .png" alt="" class="forecast"/>'+
-                '</div>';
-
-            count++;
-            if (count >= 5) {
-                return false;
-            }
-
-            console.log("The wather iamge: " +weatherImage)
-        });
-        $(".weekly-forcast").html(output);
-
+        displayForecast(info);
     } else if((city == null)){
-
+    // Geolocation results
         const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`);
         const forecastData = await response.json();
         const info = forecastData.list;
-        console.log(forecastData.list)
-        let output = "";
-        let count = 0;
-        $.each(info, function(key, value) {
-            // TODO: Add weather icons
-            let weatherImage = value.weather[0].icon;
-            output = '<div class="day-card">'+
-                '<h1 style="background-color: transparent;">'+ (value.main.temp - 273).toFixed(0) +'℃</h1>'+
-                '<img style="width: 100px; height: 100px;" id="" src="http://openweathermap.org/img/w/ '+ weatherImage  +' .png" alt="" class="forecast"/>'+
-                '</div>';
-                $(".weekly-forcast").append(output);
-                console.log(weatherImage);
-            count++;
-            if (count >= 5) {
-                return false;
-            }
-        })
+
+        displayForecast(info);
     } else{
         console.error("Unable to fetch weather");
     }
+}
 
+function displayForecast(info){
+
+    let output = "";
+    let count = 0; 
+
+    $.each(info, function(key, value) {
+        let weatherImage = value.weather[0].icon;
+        let srcString = `http://openweathermap.org/img/w/${weatherImage}.png`;
+        output += `<div class="day-card" style="padding: 20px;">`+
+            `<h3 style="background-color: transparent">${value.dt_txt}</h3>`+
+            `<img style="width: 100px; height: 100px;" id="" src="${srcString}" alt="" class="forecast"/>`+
+            `<h1 style="background-color: transparent;">${(value.main.temp_max - 273).toFixed(0)}℃</h1>`+
+            `<h2 style="background-color: transparent; color: grey">${(value.main.temp_min - 273).toFixed(0)}℃</h2>`+
+            `</div>`;
+            $(".weekly-forcast").html(output);
+        count++;
+        if (count >= 5) {
+            return false;
+        }
+    });
 }
