@@ -139,6 +139,13 @@ footer{
 
 @media screen and (max-width: 768px) {
 
+    .city-search:active{
+        background-color: rgb(23, 109, 80);
+        transition: background-color 0.1s ease-in-out;
+        cursor: pointer;
+        color: white;
+    }
+
     .app-title{
         margin-top: 0px;
     }
@@ -192,6 +199,13 @@ footer{
     }
     .weekly-forcast{
         overflow: hidden;
+    }
+
+    .city-search:active{
+        background-color: rgb(23, 109, 80);
+        transition: background-color 0.1s ease-in-out;
+        cursor: pointer;
+        color: white;
     }
     
 }

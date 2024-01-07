@@ -60,12 +60,21 @@ async function weatherForcast(city, lat, lon){
         console.log(forecastData.list)
         let output = "";
 
+        let count = 0; 
         $.each(info, function(key, value) {
-            const weatherImage = value.weather[0].icon;
+            let weatherImage = value.weather[0].icon;
+            // TODO: Add weather icons
             output += '<div class="day-card">'+
                 '<h1 style="background-color: transparent;">'+ (value.main.temp - 273).toFixed(0) +'℃</h1>'+
-                '<img id="" src="http://openweathermap.org/img/w/ '+ weatherImage  +' .png" alt="" class="forcast"/>'+
+                '<img style="width: 100px; height: 100px;" id="" src="http://openweathermap.org/img/w/ '+ weatherImage  +' .png" alt="" class="forecast"/>'+
                 '</div>';
+
+            count++;
+            if (count >= 5) {
+                return false;
+            }
+
+            console.log("The wather iamge: " +weatherImage)
         });
         $(".weekly-forcast").html(output);
 
@@ -76,14 +85,20 @@ async function weatherForcast(city, lat, lon){
         const info = forecastData.list;
         console.log(forecastData.list)
         let output = "";
+        let count = 0;
         $.each(info, function(key, value) {
-            const weatherImage = value.weather[0].icon;
+            // TODO: Add weather icons
+            let weatherImage = value.weather[0].icon;
             output = '<div class="day-card">'+
                 '<h1 style="background-color: transparent;">'+ (value.main.temp - 273).toFixed(0) +'℃</h1>'+
-                '<img id="" src="http://openweathermap.org/img/w/ '+ weatherImage  +' .png" alt="" class="forcast"/>'+
+                '<img style="width: 100px; height: 100px;" id="" src="http://openweathermap.org/img/w/ '+ weatherImage  +' .png" alt="" class="forecast"/>'+
                 '</div>';
                 $(".weekly-forcast").append(output);
                 console.log(weatherImage);
+            count++;
+            if (count >= 5) {
+                return false;
+            }
         })
     } else{
         console.error("Unable to fetch weather");
