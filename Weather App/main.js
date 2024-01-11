@@ -1,22 +1,21 @@
 /* The API key being used is from openweathermap.com
-* 
 */
 const apiKey = "631731743ef7dbcb3b8ed351af176f14";
-//Button to search for city weather information
+//Button to Search City weather info
 async function searchClick(){
     const cityName = $('.city-name-input').val();
     const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`);
-    
+  
     if(!response.ok){
         throw new Error("Could not fetch weather data");
     }
     const weatherData = await response.json();
-    displayDailyWeather(weatherData);
+    displayCurrentWeather(weatherData);
     weatherForcast(cityName, null, null);
 }
-
-function displayDailyWeather(data){
-    
+//Helper function to display current weather
+function displayCurrentWeather(data){
+  
     const {name: city, main: {temp, humidity, feels_like}} = data;
     const icon = data.weather[0].icon;
     const description = data.weather[0].description;
@@ -29,7 +28,7 @@ function displayDailyWeather(data){
     $('.weather-type').attr('src', weatherImg);
     $('#description').text(description);
 }
-
+//GEOLOCATION FUNCTION PARAMETER
 const options = {
     enableHighAccuracy: true,
     timeout: 5000,
@@ -43,35 +42,46 @@ navigator.geolocation.getCurrentPosition(function success(position) {
 }, function error(error) {
     console.warn(`ERROR(${err.code}): ${err.message}`);
 }, options);
-
+//DISPLAY CURRENT WEATHER @ CURRENT GEOLOCATION
 async function displayCurrentPositionWeather(lat, lon){
     const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`);
     const weather = await response.json();
-    displayDailyWeather(weather);
+    displayCurrentWeather(weather);
 }
-
+//HELPER FUNCTION TO DETERMIN WEATHER BASED ON LOCATION
 async function weatherForcast(city, lat, lon){
     // Search results for weather
     if(city && (lat == null && lat == null)){
-
+        // Search results for weather
+        //3-Hourly forecast
         const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`);
         const forecastData = await response.json();
         const info = forecastData.list;
+        hourlyForecast(info);
+        //Daily forecast
+        const dailyResponse = await fetch(`api.openweathermap.org/data/2.5/forecast/daily?q=${city}&cnt=${5}&appid=${apiKey}`);
+        const dailyData = await dailyResponse.json();
+        const dailyInfo = dailyData.list;
+        dailyForecast(dailyInfo);
 
-        displayForecast(info);
     } else if((city == null)){
-    // Geolocation results
+        // Geolocation results for weather
+        // 3-Hourly forecast
         const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`);
         const forecastData = await response.json();
         const info = forecastData.list;
-
-        displayForecast(info);
+        hourlyForecast(info);
+        //Daily forecast
+        const dailyResponse = await fetch(`api.openweathermap.org/data/2.5/forecast/daily?q=${city}&cnt=${5}&appid=${apiKey}`);
+        const dailyData = await dailyResponse.json();
+        const dailyInfo = dailyData.list;
+        dailyForecast(dailyInfo);
     } else{
         console.error("Unable to fetch weather");
     }
 }
 
-function displayForecast(info){
+function hourlyForecast(info){
 
     let output = "";
     let count = 0; 
@@ -91,4 +101,15 @@ function displayForecast(info){
             return false;
         }
     });
+}
+
+function dailyForecast(info){
+
+    let output = ``;
+
+    $.each(info, function(key, value){
+        output = ''+
+        //TODO: ADD DISPLAY FOR DAILY FORECAST
+        ``
+    })
 }
