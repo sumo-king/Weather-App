@@ -1,42 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weather</title>
+    <meta name="description" content="Get accurate weather forecasts and current conditions for any city worldwide">
+    <title>Weather App - Current Weather & 5-Day Forecast</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="main.css">
 </head>
-<body>
+
+<body class="weather-default">
+    <!-- Loading Spinner -->
+    <div id="loading-spinner" class="loading-spinner hidden">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Error Message Container -->
+    <div id="error-message" class="error-message hidden"></div>
+
     <header class="menu-header">
-        <h1 class="app-title" style="background-color: transparent;">The Weather App </h1>
-        <div style="background-color: transparent">
-            <input type="text" class="city-name-input" placeholder="city name">
-            <button class="city-search" onclick="searchClick()">Search</button>
+        <h1 class="app-title" style="background-color: transparent;">The Weather App</h1>
+        <div class="search-container" style="background-color: transparent">
+            <input type="text" id="city-input" class="city-name-input" placeholder="Enter city name"
+                aria-label="City name">
+            <button id="search-btn" class="city-search" onclick="searchClick()">Search</button>
+            <button id="unit-toggle" class="unit-toggle" onclick="toggleUnit()"
+                title="Toggle temperature unit">°C</button>
         </div>
-       
-     
     </header>
+
     <section class="main-section">
         <div class="weather-card">
-            <h1 style="background-color: transparent" class="city-name"></h1>
+            <h1 style="background-color: transparent" class="city-name" id="city-name"></h1>
             <h2 class="degree-style" id="description"></h2>
-            <img id="weather-icon" src="http://openweathermap.org/img/w/10d.png" class="weather-type"/>
-            <h2 class="degree-style">Temperature: <span class="degree-style" id="current-temp" ></span>℃</h2>
-            <h2 class="degree-style">Humidity: <span class="degree-style" id="current-humidity"></span></h2>
-            <h2 class="degree-style">Feels like: <span class="degree-style" id="feels-like"></span>℃</h2>
-        </div>
-        <div class="daily">
-            <h1>3 Hourly forecast</h1>
-            <div class="weekly-forcast">
-                
+            <img id="weather-icon" src="http://openweathermap.org/img/w/10d.png" class="weather-type"
+                alt="Weather icon" />
+
+            <div class="temp-display">
+                <h2 class="degree-style">Temperature: <span class="degree-style" id="current-temp"></span><span
+                        id="temp-unit">°C</span></h2>
             </div>
-            
+
+            <h2 class="degree-style">Humidity: <span class="degree-style" id="current-humidity"></span>%</h2>
+            <h2 class="degree-style">Feels like: <span class="degree-style" id="feels-like"></span><span
+                    class="temp-unit-small">°C</span></h2>
+
+            <!-- Additional Weather Metrics -->
+            <div class="weather-metrics">
+                <div class="metric-item">
+                    <span class="metric-label">Wind Speed</span>
+                    <span class="metric-value" id="wind-speed">--</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Pressure</span>
+                    <span class="metric-value" id="pressure">--</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Visibility</span>
+                    <span class="metric-value" id="visibility">--</span>
+                </div>
+            </div>
+
+            <!-- Sunrise/Sunset -->
+            <div class="sun-times">
+                <div class="sun-item">
+                    <span class="sun-label">🌅 Sunrise</span>
+                    <span class="sun-value" id="sunrise">--:--</span>
+                </div>
+                <div class="sun-item">
+                    <span class="sun-label">🌇 Sunset</span>
+                    <span class="sun-value" id="sunset">--:--</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="daily">
+            <h1>5-Day Forecast</h1>
+            <div class="weekly-forcast" id="forecast-container">
+
+            </div>
         </div>
     </section>
-    <footer>
 
+    <footer>
+        <p style="text-align: center; padding: 20px;">Weather data provided by OpenWeatherMap</p>
     </footer>
+
     <script src="main.js" type="text/javascript"></script>
     <script src="JQuery/jquery-3.7.1.js" type="text/javascript"></script>
 </body>
+
 </html>
