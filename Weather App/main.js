@@ -26,6 +26,11 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Initialize Lucide icons
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
 });
 
 // Helper function to show loading spinner
@@ -129,6 +134,43 @@ function getDayName(dateString, index) {
     return days[date.getDay()];
 }
 
+// Map OpenWeatherMap conditions to Lucide icons
+function getWeatherIcon(condition, iconCode) {
+    const isNight = iconCode && iconCode.includes('n');
+
+    const iconMap = {
+        'Clear': isNight ? 'moon' : 'sun',
+        'Clouds': isNight ? 'cloud-moon' : 'cloud',
+        'Rain': 'cloud-rain',
+        'Drizzle': 'cloud-drizzle',
+        'Thunderstorm': 'cloud-lightning',
+        'Snow': 'cloud-snow',
+        'Mist': 'cloud-fog',
+        'Fog': 'cloud-fog',
+        'Haze': 'cloud-fog',
+        'Smoke': 'cloud-fog',
+        'Dust': 'wind',
+        'Sand': 'wind',
+        'Ash': 'cloud-fog',
+        'Squall': 'wind',
+        'Tornado': 'tornado'
+    };
+
+    return iconMap[condition] || 'cloud';
+}
+
+// Update weather icon with Lucide
+function updateWeatherIcon(iconName) {
+    const iconContainer = document.getElementById('weather-icon');
+    if (iconContainer) {
+        iconContainer.innerHTML = `<i data-lucide="${iconName}"></i>`;
+        // Initialize Lucide icons
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    }
+}
+
 // Button to Search City weather info
 async function searchClick() {
     const cityName = $('#city-input').val().trim();
@@ -170,10 +212,13 @@ function displayCurrentWeather(data) {
     const icon = data.weather[0].icon;
     const description = data.weather[0].description;
     const weatherCondition = data.weather[0].main; // e.g., "Clear", "Clouds", "Rain"
-    const weatherImg = "http://openweathermap.org/img/w/" + icon + ".png";
 
     // Update weather-based background
     updateWeatherBackground(weatherCondition);
+
+    // Update weather icon with Lucide
+    const lucideIcon = getWeatherIcon(weatherCondition, icon);
+    updateWeatherIcon(lucideIcon);
 
     $('.city-name').text(city);
     $('#current-temp').text(convertTemperature(temp));
@@ -181,7 +226,6 @@ function displayCurrentWeather(data) {
     $('.temp-unit-small').text(getUnitSymbol());
     $('#current-humidity').text(humidity.toFixed(0));
     $('#feels-like').text(convertTemperature(feels_like));
-    $('.weather-type').attr('src', weatherImg);
     $('#description').text(description.charAt(0).toUpperCase() + description.slice(1));
 
     // Display additional metrics
@@ -286,7 +330,8 @@ function displayDailyForecast(forecastList) {
                 weather: [],
                 date: date,
                 icon: item.weather[0].icon,
-                description: item.weather[0].description
+                description: item.weather[0].description,
+                condition: item.weather[0].main
             };
         }
 
@@ -302,8 +347,8 @@ function displayDailyForecast(forecastList) {
     dailyArray.forEach((day, index) => {
         const maxTemp = Math.max(...day.temps);
         const minTemp = Math.min(...day.temps);
-        const srcString = `http://openweathermap.org/img/w/${day.icon}.png`;
         const dayName = getDayName(day.date, index);
+        const lucideIcon = getWeatherIcon(day.condition, day.icon);
 
         // Format date
         const dateObj = new Date(day.date);
@@ -312,7 +357,7 @@ function displayDailyForecast(forecastList) {
         output += `<div class="day-card">` +
             `<h3 class="day-name">${dayName}</h3>` +
             `<p class="forecast-date">${formattedDate}</p>` +
-            `<img style="width: 100px; height: 100px;" src="${srcString}" alt="${day.description}" class="forecast"/>` +
+            `<div class="forecast-icon"><i data-lucide="${lucideIcon}"></i></div>` +
             `<p style="background-color: transparent; color: rgb(100, 100, 100); font-size: 14px;">${day.description}</p>` +
             `<h1 style="background-color: transparent;">${convertTemperature(maxTemp)}${getUnitSymbol()}</h1>` +
             `<h2 style="background-color: transparent; color: grey">${convertTemperature(minTemp)}${getUnitSymbol()}</h2>` +
@@ -320,4 +365,9 @@ function displayDailyForecast(forecastList) {
     });
 
     $("#forecast-container").html(output);
+
+    // Initialize Lucide icons for forecast cards
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
 }

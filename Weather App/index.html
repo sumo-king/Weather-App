@@ -12,6 +12,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <link rel="stylesheet" href="main.css">
 </head>
 
@@ -39,8 +42,9 @@
         <div class="weather-card">
             <h1 style="background-color: transparent" class="city-name" id="city-name"></h1>
             <h2 class="degree-style" id="description"></h2>
-            <img id="weather-icon" src="http://openweathermap.org/img/w/10d.png" class="weather-type"
-                alt="Weather icon" />
+            <div id="weather-icon" class="weather-icon-container">
+                <!-- Lucide icon will be inserted here -->
+            </div>
 
             <div class="temp-display">
                 <h2 class="degree-style">Temperature: <span class="degree-style" id="current-temp"></span><span
@@ -70,11 +74,17 @@
             <!-- Sunrise/Sunset -->
             <div class="sun-times">
                 <div class="sun-item">
-                    <span class="sun-label">🌅 Sunrise</span>
+                    <span class="sun-label">
+                        <i data-lucide="sunrise" class="sun-icon"></i>
+                        Sunrise
+                    </span>
                     <span class="sun-value" id="sunrise">--:--</span>
                 </div>
                 <div class="sun-item">
-                    <span class="sun-label">🌇 Sunset</span>
+                    <span class="sun-label">
+                        <i data-lucide="sunset" class="sun-icon"></i>
+                        Sunset
+                    </span>
                     <span class="sun-value" id="sunset">--:--</span>
                 </div>
             </div>
